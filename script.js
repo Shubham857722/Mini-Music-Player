@@ -3,15 +3,22 @@ const songsList = [
         name: "Jazz In Paris",
         artist: "Media Right Productions",
         src: "Music Player_assets_1.mp3",
-        cover: "assets/1.jpg"
+        cover: "1.jpg"
     },
 
     {
-        name: "choliya me",
-        artist: "shubham yadav aurf divana",
-        src: "choliyame.mp3",
-        cover: "assets/1.jpg"
+        name: "Aa Aa Aashiqui Mein",
+        artist: "	Himesh Reshammiya",
+        src: "Aa Aa Aashiqui Mein Teri(PagalWorld.com.so).mp3",
+        cover: "aashiq.jpg"
+    },
+    {
+        name: "Deva Shree Ganesha ",
+        artist: "	Ajay Gogavale,Shubham yadav	",
+        src: "	Deva Shree Ganesha_64(PagalWorld.com.sb).mp3",
+        cover: "Deva.jpg"
     }
+
     
 ];
 
@@ -24,6 +31,9 @@ const playBtn = document.getElementById('play');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 const prog = document.querySelector('.progress-bar');
+const volumeSlider = document.querySelector('.volume-slider');
+const volumeIcon = document.querySelector('.volume-icon');
+
 
 let song = new Audio();
 let currentSong = 0;
@@ -37,6 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.addEventListener('click', nextSong);
     playBtn.addEventListener('click', togglePlayPause);
     prog.addEventListener('click', seek);
+    volumeSlider.addEventListener('input', (e) => {
+        const volume = e.target.value / 100;
+        song.volume = volume;
+
+        // Change the volume icon based on the volume level
+        if (volume === 0) {
+            volumeIcon.textContent = '🔇'; // Mute icon
+        } else if (volume <= 0.5) {
+            volumeIcon.textContent = '🔉'; // Low volume icon
+        } else {
+            volumeIcon.textContent = '🔊'; // High volume icon
+        }
+    });
+
+    // Mute/unmute when clicking on the volume icon
+    volumeIcon.addEventListener('click', () => {
+        if (song.volume > 0) {
+            song.volume = 0;
+            volumeSlider.value = 0;
+            volumeIcon.textContent = '🔇'; // Mute icon
+        } else {
+            song.volume = 0.5; // Restore to a default value (50%)
+            volumeSlider.value = 50;
+            volumeIcon.textContent = '🔉'; // Low volume icon
+        }
+    });
 });
 
 function loadSong(index) {
